@@ -44,7 +44,7 @@ export class AuthService {
       throw new ConflictException('Email already registered');
     }
 
-    const roleSlug = process.env.SIGNUP_DEFAULT_ROLE_SLUG?.trim();
+    const roleSlug = process.env.SIGNUP_DEFAULT_ROLE_SLUG?.trim() || 'customer';
 
     const role = await this.prisma.role.findUnique({
       where: { slug: roleSlug },

@@ -14,7 +14,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { getApiErrorMessage, login } from '@/services/auth';
-import { useAuthStore, selectSessionReady } from '@/store/auth.store';
+import { useAuthStore, selectAccessToken, selectSessionReady } from '@/store/auth.store';
 import { useGuestGuard } from '@/hooks/useAuthGuard';
 import { getPostLoginRedirect } from '@/utils/safe-return-url';
 
@@ -31,8 +31,9 @@ const inputClass =
 export function LoginView() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const setAuth = useAuthStore((s) => s.setAuth);
+  const accessToken = useAuthStore(selectAccessToken);
   const sessionReady = useAuthStore(selectSessionReady);
+  const setAuth = useAuthStore((s) => s.setAuth);
   const shouldShowLogin = useGuestGuard();
   const [showPassword, setShowPassword] = React.useState(false);
   const [rememberMe, setRememberMe] = React.useState(false);
@@ -74,10 +75,12 @@ export function LoginView() {
     [clearErrors, returnUrl, router, setAuth, setError]
   );
 
-  if (!sessionReady) {
+  if (!sessionReady || accessToken) {
     return (
       <div className="flex min-h-full flex-1 items-center justify-center bg-[#fafafa] px-4 py-12">
-        <p className="text-sm text-muted-foreground">Checking session…</p>
+        <p className="text-sm text-muted-foreground">
+          {accessToken ? 'Redirecting…' : 'Checking session…'}
+        </p>
       </div>
     );
   }
