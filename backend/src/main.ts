@@ -2,19 +2,25 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common/pipes/validation.pipe';
 
+import cookieParser from 'cookie-parser';
+
+import { getCorsOrigins } from './config/cors.config';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Global API Prefix
-  app.setGlobalPrefix('api');
+  const expressApp = app.getHttpAdapter().getInstance();
+  expressApp.set('trust proxy', 1);
 
-  // Enable CORS
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: getCorsOrigins(),
     credentials: true,
   });
 
-  // Global Validation
+  app.use(cookieParser());
+
+  app.setGlobalPrefix('api');
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -23,6 +29,8 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(5000);
+  const port = Number(process.env.PORT) || 5000;
+
+  await app.listen(port);
 }
 bootstrap();
