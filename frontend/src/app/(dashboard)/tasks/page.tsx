@@ -182,7 +182,7 @@ export default function TasksPage() {
           description="Create a task above, or ask an admin for the tasks.create permission."
         />
       ) : (
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {COLUMNS.map((col) => (
             <Card key={col.status} className="flex flex-col bg-muted/20 ring-foreground/5">
               <CardHeader className="border-b border-border/60 pb-3">
@@ -271,7 +271,7 @@ export default function TasksPage() {
       )}
 
       <Dialog open={editing !== null} onOpenChange={(o) => !o && setEditing(null)}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Edit task</DialogTitle>
             <DialogDescription>Update title and description.</DialogDescription>

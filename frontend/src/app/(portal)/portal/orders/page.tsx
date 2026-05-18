@@ -3,15 +3,8 @@
 import { PortalCustomerDemoNotice } from '@/components/portal/portal-customer-demo-notice';
 import { EmptyState } from '@/components/shared/empty-state';
 import { PageHeader } from '@/components/shared/page-header';
+import { ResponsiveTable } from '@/components/shared/responsive-table';
 import { Badge } from '@/components/ui/badge';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { DUMMY_PORTAL_ORDERS } from '@/data/portal-customer-dummy';
 import { useAuthStore, selectSessionReady } from '@/store/auth.store';
 
@@ -35,28 +28,44 @@ export default function PortalOrdersPage() {
       ) : showCustomerDemo ? (
         <>
           <PortalCustomerDemoNotice />
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Order</TableHead>
-                <TableHead>Reference</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Placed</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {DUMMY_PORTAL_ORDERS.map((o) => (
-                <TableRow key={o.id}>
-                  <TableCell className="font-mono text-xs">{o.id}</TableCell>
-                  <TableCell>{o.reference}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary">{o.status}</Badge>
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">{o.placedAt}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <ResponsiveTable
+            rows={DUMMY_PORTAL_ORDERS}
+            getRowKey={(o) => o.id}
+            mobileHeader={(o) => (
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-mono text-xs font-medium">{o.id}</span>
+                <Badge variant="secondary">{o.status}</Badge>
+              </div>
+            )}
+            columns={[
+              {
+                header: 'Order',
+                mobileLabel: 'Order',
+                hideOnMobile: true,
+                cell: (o) => <span className="font-mono text-xs">{o.id}</span>,
+                mobileValue: (o) => <span className="font-mono text-xs">{o.id}</span>,
+              },
+              {
+                header: 'Reference',
+                mobileLabel: 'Reference',
+                cell: (o) => o.reference,
+                mobileValue: (o) => o.reference,
+              },
+              {
+                header: 'Status',
+                mobileLabel: 'Status',
+                hideOnMobile: true,
+                cell: (o) => <Badge variant="secondary">{o.status}</Badge>,
+                mobileValue: (o) => <Badge variant="secondary">{o.status}</Badge>,
+              },
+              {
+                header: 'Placed',
+                mobileLabel: 'Placed',
+                cell: (o) => <span className="text-muted-foreground">{o.placedAt}</span>,
+                mobileValue: (o) => <span className="text-muted-foreground">{o.placedAt}</span>,
+              },
+            ]}
+          />
         </>
       ) : (
         <EmptyState

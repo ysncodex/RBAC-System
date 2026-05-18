@@ -3,15 +3,8 @@
 import { PortalCustomerDemoNotice } from '@/components/portal/portal-customer-demo-notice';
 import { EmptyState } from '@/components/shared/empty-state';
 import { PageHeader } from '@/components/shared/page-header';
+import { ResponsiveTable } from '@/components/shared/responsive-table';
 import { Badge } from '@/components/ui/badge';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { DUMMY_PORTAL_TICKETS } from '@/data/portal-customer-dummy';
 import { useAuthStore, selectSessionReady } from '@/store/auth.store';
 
@@ -35,28 +28,44 @@ export default function PortalTicketsPage() {
       ) : showCustomerDemo ? (
         <>
           <PortalCustomerDemoNotice />
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Ticket</TableHead>
-                <TableHead>Subject</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Updated</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {DUMMY_PORTAL_TICKETS.map((t) => (
-                <TableRow key={t.id}>
-                  <TableCell className="font-mono text-xs">{t.id}</TableCell>
-                  <TableCell>{t.subject}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary">{t.status}</Badge>
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">{t.updatedAt}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <ResponsiveTable
+            rows={DUMMY_PORTAL_TICKETS}
+            getRowKey={(t) => t.id}
+            mobileHeader={(t) => (
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-mono text-xs font-medium">{t.id}</span>
+                <Badge variant="secondary">{t.status}</Badge>
+              </div>
+            )}
+            columns={[
+              {
+                header: 'Ticket',
+                mobileLabel: 'Ticket',
+                hideOnMobile: true,
+                cell: (t) => <span className="font-mono text-xs">{t.id}</span>,
+                mobileValue: (t) => <span className="font-mono text-xs">{t.id}</span>,
+              },
+              {
+                header: 'Subject',
+                mobileLabel: 'Subject',
+                cell: (t) => t.subject,
+                mobileValue: (t) => t.subject,
+              },
+              {
+                header: 'Status',
+                mobileLabel: 'Status',
+                hideOnMobile: true,
+                cell: (t) => <Badge variant="secondary">{t.status}</Badge>,
+                mobileValue: (t) => <Badge variant="secondary">{t.status}</Badge>,
+              },
+              {
+                header: 'Updated',
+                mobileLabel: 'Updated',
+                cell: (t) => <span className="text-muted-foreground">{t.updatedAt}</span>,
+                mobileValue: (t) => <span className="text-muted-foreground">{t.updatedAt}</span>,
+              },
+            ]}
+          />
         </>
       ) : (
         <EmptyState

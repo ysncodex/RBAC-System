@@ -81,7 +81,7 @@ export default function SettingsPage() {
               </div>
               <div>
                 <dt className="text-muted-foreground">Email</dt>
-                <dd className="font-medium">{user.email}</dd>
+                <dd className="break-all font-medium">{user.email}</dd>
               </div>
               <div>
                 <dt className="text-muted-foreground">Role</dt>

@@ -73,7 +73,7 @@ export default function UsersPage() {
         }
         action={
           <PermissionGate permission="users.create">
-            <Button type="button" onClick={() => setCreateOpen(true)}>
+            <Button type="button" className="w-full sm:w-auto" onClick={() => setCreateOpen(true)}>
               <Plus className="mr-2 h-4 w-4" />
               Create User
             </Button>
@@ -146,29 +146,45 @@ export default function UsersPage() {
             ) : null}
           </div>
         ) : (
-          <DataTable>
-            <table className="w-full min-w-[640px] text-sm">
-              <thead className="border-b bg-muted/50">
-                <tr>
-                  <th className="px-4 py-3 text-left">User</th>
-                  <th className="px-4 py-3 text-left">Email</th>
-                  <th className="px-4 py-3 text-left">Role</th>
-                  <th className="px-4 py-3 text-left">Status</th>
-                  <th className="w-12 px-4 py-3 text-right" aria-label="Actions" />
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <UserRow
-                    key={user.id}
-                    user={user}
-                    onEdit={setEditingUser}
-                    onDelete={setUserToDelete}
-                  />
-                ))}
-              </tbody>
-            </table>
-          </DataTable>
+          <>
+            <div className="space-y-3 lg:hidden">
+              {users.map((user) => (
+                <UserRow
+                  key={user.id}
+                  user={user}
+                  variant="card"
+                  onEdit={setEditingUser}
+                  onDelete={setUserToDelete}
+                />
+              ))}
+            </div>
+
+            <div className="hidden lg:block">
+              <DataTable>
+                <table className="w-full text-sm">
+                  <thead className="border-b bg-muted/50">
+                    <tr>
+                      <th className="px-4 py-3 text-left">User</th>
+                      <th className="px-4 py-3 text-left">Email</th>
+                      <th className="px-4 py-3 text-left">Role</th>
+                      <th className="px-4 py-3 text-left">Status</th>
+                      <th className="w-12 px-4 py-3 text-right" aria-label="Actions" />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((user) => (
+                      <UserRow
+                        key={user.id}
+                        user={user}
+                        onEdit={setEditingUser}
+                        onDelete={setUserToDelete}
+                      />
+                    ))}
+                  </tbody>
+                </table>
+              </DataTable>
+            </div>
+          </>
         )}
       </SectionCard>
 

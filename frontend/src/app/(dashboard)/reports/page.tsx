@@ -150,7 +150,12 @@ export default function ReportsPage() {
         }
         action={
           <PermissionGate permission="reports.export">
-            <Button type="button" variant="outline" className="gap-2" onClick={handleExport}>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full gap-2 sm:w-auto"
+              onClick={handleExport}
+            >
               <Download className="h-4 w-4" />
               Export CSV
             </Button>

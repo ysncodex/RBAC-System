@@ -37,7 +37,7 @@ export function UserMenu() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="h-9 gap-2 px-3 font-normal"
+          className="h-9 gap-2 px-2 sm:px-3 font-normal"
           disabled={isSigningOut}
           aria-label="Account menu"
         >
@@ -47,11 +47,11 @@ export function UserMenu() {
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent align="end" className="w-56 max-w-[calc(100vw-2rem)]">
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-0.5">
-            <p className="text-sm font-medium leading-none">{user?.name}</p>
-            <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+            <p className="truncate text-sm font-medium leading-none">{user?.name}</p>
+            <p className="break-all text-xs leading-snug text-muted-foreground">{user?.email}</p>
             <p className="pt-1 text-xs capitalize text-muted-foreground">{user?.role}</p>
           </div>
         </DropdownMenuLabel>

@@ -207,7 +207,7 @@ export default function PermissionsPage() {
       />
 
       {!hasViewAll ? (
-        <p className="mb-4 text-sm text-muted-foreground">
+        <p className="mb-4 text-pretty break-words text-sm text-muted-foreground">
           User overrides are limited to <strong>agents</strong> in your management scope. Role-wide
           templates require elevated access.
         </p>
@@ -226,27 +226,29 @@ export default function PermissionsPage() {
         <LoadingSpinner />
       ) : hasViewAll || assignableUsers.length > 0 ? (
         <Tabs value={activeTab} onValueChange={handleTabChange} className="gap-4">
-          <TabsList className="w-full max-w-md">
+          <TabsList className="grid h-auto w-full max-w-md grid-cols-1 gap-1 sm:grid-cols-2">
             <TabsTrigger value="user">User overrides</TabsTrigger>
             {canEditRoleTemplates ? <TabsTrigger value="role">Role defaults</TabsTrigger> : null}
           </TabsList>
 
           <TabsContent value="user" className="space-y-4">
             <SectionCard title="User permission overrides">
-              <p className="mb-4 text-sm text-muted-foreground">
+              <p className="mb-4 text-pretty break-words text-sm text-muted-foreground">
                 These apply on top of the user&apos;s role. Saving replaces all user-level
                 permissions shown below.
               </p>
-              <div className="mb-4 max-w-md space-y-2">
+              <div className="mb-4 w-full max-w-md space-y-2">
                 <p className="text-sm font-medium">User</p>
                 <Select value={userId || undefined} onValueChange={handleUserSelect}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Choose a user" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent position="popper" className="max-w-[min(calc(100vw-2rem),var(--radix-select-trigger-width))]">
                     {assignableUsers.map((u) => (
                       <SelectItem key={u.id} value={u.id}>
-                        {u.name} ({u.email})
+                        <span className="truncate">
+                          {u.name} ({u.email})
+                        </span>
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -261,7 +263,7 @@ export default function PermissionsPage() {
               ) : null}
               <PermissionGate permission="permissions.assign">
                 <Button
-                  className="mt-4"
+                  className="mt-4 w-full sm:w-auto"
                   onClick={handleSaveUser}
                   disabled={!userId || saveUserMutation.isPending}
                 >
@@ -278,16 +280,16 @@ export default function PermissionsPage() {
                   Applies to all users with this role unless they have user-level overrides. Saving
                   replaces the role&apos;s permission set.
                 </p>
-                <div className="mb-4 max-w-md space-y-2">
+                <div className="mb-4 w-full max-w-md space-y-2">
                   <p className="text-sm font-medium">Role</p>
                   <Select value={roleId || undefined} onValueChange={handleRoleSelect}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Choose a role" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent position="popper" className="max-w-[min(calc(100vw-2rem),var(--radix-select-trigger-width))]">
                       {roles.map((r) => (
                         <SelectItem key={r.id} value={r.id}>
-                          {r.name}
+                          <span className="truncate">{r.name}</span>
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -303,7 +305,7 @@ export default function PermissionsPage() {
                 ) : null}
                 <PermissionGate permission="permissions.assign_roles">
                   <Button
-                    className="mt-4"
+                    className="mt-4 w-full sm:w-auto"
                     onClick={handleSaveRole}
                     disabled={!roleId || saveRoleMutation.isPending || roleSlugsLoading}
                   >

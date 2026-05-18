@@ -3,15 +3,8 @@
 import { PortalCustomerDemoNotice } from '@/components/portal/portal-customer-demo-notice';
 import { EmptyState } from '@/components/shared/empty-state';
 import { PageHeader } from '@/components/shared/page-header';
+import { ResponsiveTable } from '@/components/shared/responsive-table';
 import { Badge } from '@/components/ui/badge';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { DUMMY_PORTAL_INTERACTIONS } from '@/data/portal-customer-dummy';
 import { useAuthStore, selectSessionReady } from '@/store/auth.store';
 
@@ -35,28 +28,44 @@ export default function PortalInteractionsPage() {
       ) : showCustomerDemo ? (
         <>
           <PortalCustomerDemoNotice />
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Id</TableHead>
-                <TableHead>Channel</TableHead>
-                <TableHead>Summary</TableHead>
-                <TableHead>When</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {DUMMY_PORTAL_INTERACTIONS.map((i) => (
-                <TableRow key={i.id}>
-                  <TableCell className="font-mono text-xs">{i.id}</TableCell>
-                  <TableCell>
-                    <Badge variant="outline">{i.channel}</Badge>
-                  </TableCell>
-                  <TableCell className="max-w-[280px] whitespace-normal">{i.summary}</TableCell>
-                  <TableCell className="text-muted-foreground">{i.at}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <ResponsiveTable
+            rows={DUMMY_PORTAL_INTERACTIONS}
+            getRowKey={(i) => i.id}
+            mobileHeader={(i) => (
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-mono text-xs font-medium">{i.id}</span>
+                <Badge variant="outline">{i.channel}</Badge>
+              </div>
+            )}
+            columns={[
+              {
+                header: 'Id',
+                mobileLabel: 'Id',
+                hideOnMobile: true,
+                cell: (i) => <span className="font-mono text-xs">{i.id}</span>,
+                mobileValue: (i) => <span className="font-mono text-xs">{i.id}</span>,
+              },
+              {
+                header: 'Channel',
+                mobileLabel: 'Channel',
+                hideOnMobile: true,
+                cell: (i) => <Badge variant="outline">{i.channel}</Badge>,
+                mobileValue: (i) => <Badge variant="outline">{i.channel}</Badge>,
+              },
+              {
+                header: 'Summary',
+                mobileLabel: 'Summary',
+                cell: (i) => <span className="max-w-[280px] whitespace-normal">{i.summary}</span>,
+                mobileValue: (i) => i.summary,
+              },
+              {
+                header: 'When',
+                mobileLabel: 'When',
+                cell: (i) => <span className="text-muted-foreground">{i.at}</span>,
+                mobileValue: (i) => <span className="text-muted-foreground">{i.at}</span>,
+              },
+            ]}
+          />
         </>
       ) : (
         <EmptyState

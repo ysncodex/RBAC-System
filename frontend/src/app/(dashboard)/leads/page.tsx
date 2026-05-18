@@ -204,8 +204,8 @@ export default function LeadsPage() {
               </SelectContent>
             </Select>
           </div>
-          <div className="flex items-end">
-            <Button type="submit" className="gap-2">
+          <div className="flex items-end md:col-span-2">
+            <Button type="submit" className="w-full gap-2 sm:w-auto">
               <Plus className="h-4 w-4" />
               Add lead
             </Button>
@@ -219,7 +219,7 @@ export default function LeadsPage() {
           description="Capture opportunities above. Nothing is sent to the server yet."
         />
       ) : (
-        <div className="grid gap-4 xl:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4">
           {STAGES.map((col) => (
             <Card key={col.stage} size="sm" className="bg-muted/15 ring-foreground/5">
               <CardHeader className="border-b border-border/60 pb-2">
@@ -266,7 +266,7 @@ export default function LeadsPage() {
                           {lead.notes}
                         </p>
                       ) : null}
-                      <div className="mt-2 flex items-center justify-between gap-2 border-t pt-2">
+                      <div className="mt-2 flex flex-col gap-2 border-t pt-2 sm:flex-row sm:items-center sm:justify-between">
                         <Select
                           value={lead.stage}
                           onValueChange={(v) => {
@@ -274,7 +274,7 @@ export default function LeadsPage() {
                             toast.success('Stage updated');
                           }}
                         >
-                          <SelectTrigger className="h-8 flex-1 text-xs">
+                          <SelectTrigger className="h-8 w-full text-xs sm:flex-1">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -285,26 +285,28 @@ export default function LeadsPage() {
                             ))}
                           </SelectContent>
                         </Select>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 shrink-0"
-                          aria-label="Edit lead"
-                          onClick={() => setEditing(lead)}
-                        >
-                          <Pencil className="h-3.5 w-3.5" />
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 shrink-0 text-destructive hover:text-destructive"
-                          aria-label="Delete lead"
-                          onClick={() => setDeleteId(lead.id)}
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
+                        <div className="flex shrink-0 justify-end gap-0.5 sm:justify-start">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 shrink-0"
+                            aria-label="Edit lead"
+                            onClick={() => setEditing(lead)}
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 shrink-0 text-destructive hover:text-destructive"
+                            aria-label="Delete lead"
+                            onClick={() => setDeleteId(lead.id)}
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   ))

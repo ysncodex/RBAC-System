@@ -10,12 +10,12 @@ interface Props {
 
 export function SectionCard({ title, children }: Props) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
+    <Card className="overflow-hidden">
+      <CardHeader className="px-4 py-4 sm:px-6">
+        <CardTitle className="text-base sm:text-lg">{title}</CardTitle>
       </CardHeader>
 
-      <CardContent>{children}</CardContent>
+      <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">{children}</CardContent>
     </Card>
   );
 }

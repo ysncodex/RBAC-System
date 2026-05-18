@@ -9,6 +9,7 @@ import { SectionCard } from '@/components/shared/section-card';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
 import { EmptyState } from '@/components/shared/empty-state';
 import { DataTable } from '@/components/shared/data-table';
+import { DataCard } from '@/components/shared/data-card';
 import { Button } from '@/components/ui/button';
 import { getAuditLogs } from '@/services/audit.service';
 
@@ -60,57 +61,109 @@ export default function AuditPage() {
             description="Actions will appear here as they occur."
           />
         ) : (
-          <DataTable>
-            <table className="w-full min-w-[900px] text-sm">
-              <thead className="border-b bg-muted/50">
-                <tr>
-                  <th className="px-4 py-3 text-left">Time</th>
-                  <th className="px-4 py-3 text-left">Actor</th>
-                  <th className="px-4 py-3 text-left">Action</th>
-                  <th className="px-4 py-3 text-left">Target</th>
-                  <th className="px-4 py-3 text-left">IP</th>
-                  <th className="px-4 py-3 text-left">Metadata</th>
-                </tr>
-              </thead>
-              <tbody>
-                {logs.map((row) => (
-                  <tr key={row.id} className="border-b">
-                    <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">
-                      {format(new Date(row.createdAt), 'yyyy-MM-dd HH:mm')}
-                    </td>
-                    <td className="max-w-[200px] px-4 py-3">
-                      <div className="truncate font-medium" title={row.actor.name}>
-                        {row.actor.name}
-                      </div>
-                      <div
-                        className="truncate text-xs text-muted-foreground"
-                        title={row.actor.email}
-                      >
-                        {row.actor.email}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 font-mono text-xs">{row.action}</td>
-                    <td className="px-4 py-3 font-mono text-xs">
-                      {row.targetType}
-                      {row.targetId ? (
-                        <>
-                          <br />
-                          <span className="text-muted-foreground">{row.targetId}</span>
-                        </>
-                      ) : null}
-                    </td>
-                    <td className="px-4 py-3 font-mono text-xs">{row.ipAddress ?? '—'}</td>
-                    <td
-                      className="max-w-[min(280px,30vw)] truncate px-4 py-3 font-mono text-xs text-muted-foreground"
-                      title={formatMetadata(row.metadata)}
-                    >
-                      {formatMetadata(row.metadata)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </DataTable>
+          <>
+            <div className="space-y-3 lg:hidden">
+              {logs.map((row) => (
+                <DataCard
+                  key={row.id}
+                  header={
+                    <div className="space-y-1">
+                      <p className="font-mono text-xs font-medium">{row.action}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {format(new Date(row.createdAt), 'yyyy-MM-dd HH:mm')}
+                      </p>
+                    </div>
+                  }
+                  fields={[
+                    {
+                      label: 'Actor',
+                      value: (
+                        <div>
+                          <p className="font-medium">{row.actor.name}</p>
+                          <p className="text-xs text-muted-foreground">{row.actor.email}</p>
+                        </div>
+                      ),
+                    },
+                    {
+                      label: 'Target',
+                      value: (
+                        <span className="font-mono text-xs">
+                          {row.targetType}
+                          {row.targetId ? ` · ${row.targetId}` : ''}
+                        </span>
+                      ),
+                    },
+                    {
+                      label: 'IP',
+                      value: <span className="font-mono text-xs">{row.ipAddress ?? '—'}</span>,
+                    },
+                    {
+                      label: 'Meta',
+                      value: (
+                        <span className="break-all font-mono text-xs text-muted-foreground">
+                          {formatMetadata(row.metadata)}
+                        </span>
+                      ),
+                    },
+                  ]}
+                />
+              ))}
+            </div>
+
+            <div className="hidden lg:block">
+              <DataTable>
+                <table className="w-full text-sm">
+                  <thead className="border-b bg-muted/50">
+                    <tr>
+                      <th className="px-4 py-3 text-left">Time</th>
+                      <th className="px-4 py-3 text-left">Actor</th>
+                      <th className="px-4 py-3 text-left">Action</th>
+                      <th className="px-4 py-3 text-left">Target</th>
+                      <th className="px-4 py-3 text-left">IP</th>
+                      <th className="px-4 py-3 text-left">Metadata</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {logs.map((row) => (
+                      <tr key={row.id} className="border-b">
+                        <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">
+                          {format(new Date(row.createdAt), 'yyyy-MM-dd HH:mm')}
+                        </td>
+                        <td className="max-w-[200px] px-4 py-3">
+                          <div className="truncate font-medium" title={row.actor.name}>
+                            {row.actor.name}
+                          </div>
+                          <div
+                            className="truncate text-xs text-muted-foreground"
+                            title={row.actor.email}
+                          >
+                            {row.actor.email}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 font-mono text-xs">{row.action}</td>
+                        <td className="px-4 py-3 font-mono text-xs">
+                          {row.targetType}
+                          {row.targetId ? (
+                            <>
+                              <br />
+                              <span className="text-muted-foreground">{row.targetId}</span>
+                            </>
+                          ) : null}
+                        </td>
+                        <td className="px-4 py-3 font-mono text-xs">{row.ipAddress ?? '—'}</td>
+                        <td
+                          className="max-w-[min(280px,30vw)] truncate px-4 py-3 font-mono text-xs text-muted-foreground"
+                          title={formatMetadata(row.metadata)}
+                        >
+                          {formatMetadata(row.metadata)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </DataTable>
+            </div>
+          </>
         )}
       </SectionCard>
     </div>

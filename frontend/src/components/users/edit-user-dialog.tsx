@@ -125,7 +125,7 @@ export function EditUserDialog({ user, open, onOpenChange }: Props) {
       <DialogContent className="sm:max-w-lg md:max-w-xl">
         <DialogHeader>
           <DialogTitle>Edit user</DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-pretty break-words">
             Update profile and role. Changes are saved to the server immediately.
             {isSelf && (
               <span className="mt-2 block text-xs text-muted-foreground">
@@ -182,10 +182,10 @@ export function EditUserDialog({ user, open, onOpenChange }: Props) {
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder={rolesLoading ? 'Loading roles…' : 'Select a role'} />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent position="popper" className="max-w-[min(calc(100vw-2rem),var(--radix-select-trigger-width))]">
                     {visibleRoles.map((r) => (
                       <SelectItem key={r.id} value={r.id}>
-                        {r.name}
+                        <span className="truncate">{r.name}</span>
                       </SelectItem>
                     ))}
                   </SelectContent>

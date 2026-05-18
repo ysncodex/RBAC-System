@@ -21,7 +21,7 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'hidden border-r bg-background lg:flex lg:flex-col transition-all duration-300 ease-in-out',
+        'hidden border-r bg-background lg:sticky lg:top-0 lg:flex lg:h-dvh lg:shrink-0 lg:flex-col transition-all duration-300 ease-in-out',
         isCollapsed ? 'w-20' : 'w-64'
       )}
     >
@@ -42,7 +42,7 @@ export function Sidebar() {
         </button>
       </div>
 
-      <nav className="flex-1 space-y-1 p-4">
+      <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto p-4">
         {items.map((item) => {
           const Icon = item.icon;
           const active = pathname === item.href;

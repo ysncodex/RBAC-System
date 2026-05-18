@@ -2,8 +2,8 @@ import Link from 'next/link';
 
 export default function ForgotPasswordPage() {
   return (
-    <div className="flex min-h-full flex-1 items-center justify-center bg-[#fafafa] px-4 py-12 font-sans">
-      <div className="w-full max-w-[420px] rounded-[28px] bg-white px-8 py-10 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.12)]">
+    <div className="flex min-h-full flex-1 items-center justify-center bg-[#fafafa] px-4 py-8 sm:py-12 font-sans">
+      <div className="w-full max-w-[420px] rounded-[20px] bg-white px-5 py-8 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.12)] sm:rounded-[28px] sm:px-8 sm:py-10">
         <header className="mb-6 text-center">
           <h1 className="text-2xl font-bold tracking-tight text-black">Forgot password?</h1>
           <p className="mt-3 text-sm leading-relaxed text-[#999999]">

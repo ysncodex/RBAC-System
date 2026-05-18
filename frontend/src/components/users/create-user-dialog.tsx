@@ -171,10 +171,10 @@ export function CreateUserDialog({ open, onOpenChange }: Props) {
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder={rolesLoading ? 'Loading roles…' : 'Select a role'} />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent position="popper" className="max-w-[min(calc(100vw-2rem),var(--radix-select-trigger-width))]">
                     {visibleRoles.map((r) => (
                       <SelectItem key={r.id} value={r.id}>
-                        {r.name}
+                        <span className="truncate">{r.name}</span>
                       </SelectItem>
                     ))}
                   </SelectContent>
