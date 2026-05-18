@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-function getApiOrigin(): string {
-  return process.env.API_PROXY_TARGET?.trim().replace(/\/$/, '') ?? '';
-}
+import { missingApiOriginMessage, resolveApiOrigin } from '@/lib/api-origin';
 
 async function proxyRequest(request: NextRequest, pathSegments: string[]) {
-  const apiOrigin = getApiOrigin();
+  const apiOrigin = resolveApiOrigin();
   if (!apiOrigin) {
-    return NextResponse.json(
-      { message: 'API_PROXY_TARGET is not configured on the frontend host' },
-      { status: 503 },
-    );
+    return NextResponse.json({ message: missingApiOriginMessage() }, { status: 503 });
   }
 
   const path = pathSegments.join('/');

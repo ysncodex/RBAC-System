@@ -5,6 +5,12 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  NEXT_PUBLIC_API_URL = "/api"
+  API_PROXY_TARGET = "https://rbac-system-7kzq.onrender.com"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# Also set in Netlify UI (secrets — not committed):
+# JWT_REFRESH_SECRET=<same value as Render backend>
+# FRONTEND_URL on Render must be https://rbac-system-p.netlify.app
