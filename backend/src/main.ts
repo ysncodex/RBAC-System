@@ -21,6 +21,15 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
+  expressApp.get('/', (_req, res) => {
+    res.json({
+      service: 'RBAC API',
+      status: 'ok',
+      health: '/api/health',
+      auth: '/api/auth',
+    });
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
